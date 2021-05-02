@@ -1,5 +1,7 @@
-use std::fs::File;
+use std::fs::{File, create_dir_all};
 use std::io::prelude::*;
+use std::path::Path;
+use dirs::home_dir;
 use serde::{Deserialize, Serialize};
 use serde_json;
 
@@ -30,7 +32,19 @@ pub fn github(git: clap::ArgMatches) {
 fn set_github(user: &str, token: &str) {
     let cred: GitHub = GitHub::new(user, token);
     let text = serde_json::to_vec(&cred).unwrap();
-    let mut file = File::create("cred.json").unwrap();
+    // let path = Path::new("~/.repo_maker");
+    let home: String = home_dir().unwrap().to_str().unwrap().to_string();
+    // println!("{:?}", home);
+    let path = format!("{}/.repo_maker", home);
+    let folder = Path::new(&path);
+    match create_dir_all(folder) {
+        Ok(_) => (),
+        Err(err) => {
+            println!("{:?}", err);
+        }
+    };
+    let file_path = format!("{}/.repo_maker/cred.json", home);
+    let mut file = File::create(file_path).unwrap();
     file.write_all(&text).unwrap();
     println!("Credentials upadated");
 }
