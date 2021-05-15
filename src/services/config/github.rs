@@ -2,22 +2,12 @@ use std::fs::{File, create_dir_all};
 use std::io::prelude::*;
 use std::path::Path;
 use dirs::home_dir;
-use serde::{Deserialize, Serialize};
+// use serde::{Deserialize, Serialize};
 use serde_json;
 
-#[derive(Debug, Serialize, Deserialize)]
-struct GitHub {
-    username: String,
-    token: String
-}
+use crate::services::GitHub;
 
-impl GitHub {
-    fn new(user: &str, token: &str) -> GitHub {
-        GitHub { username: user.to_string(), token: token.to_string() }
-    }
-}
-
-pub fn github(git: clap::ArgMatches) {
+pub fn config_github(git: clap::ArgMatches) {
     match git.value_of("username") {
         Some(user) => {
             match git.value_of("token") {
@@ -30,6 +20,7 @@ pub fn github(git: clap::ArgMatches) {
 }
 
 fn set_github(user: &str, token: &str) {
+    // let cred: GitHub = GitHub::new(user, token);
     let cred: GitHub = GitHub::new(user, token);
     let text = serde_json::to_vec(&cred).unwrap();
     let home: String = home_dir().unwrap().to_str().unwrap().to_string();

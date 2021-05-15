@@ -7,10 +7,16 @@ fn main() {
         .author("Joao Pedro Poloni Ponce <poloniponce@protonmail.ch>")
         .arg(
             Arg::with_name("target")
-                .help("Selected target")
+                .help("Selected target config_github | github")
                 .takes_value(true)
                 .index(1)
                 .required(true)
+        )
+        .arg(
+            Arg::with_name("action")
+                .help("create | pullrequest")
+                .takes_value(true)
+                .index(2)
         )
         .arg(
             Arg::with_name("username")
@@ -29,7 +35,8 @@ fn main() {
         .get_matches();
 
     match matches.value_of("target") {
-        Some("config") => services::github(matches),
+        Some("config") => services::config_github(matches),
+        Some("config_github") => services::config_github(matches),
         Some(_) => println!("Command not found"),
         None => println!("Invalid command"),
     };
