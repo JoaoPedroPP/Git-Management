@@ -14,6 +14,12 @@ pub struct GitHub {
 pub struct RepoCreation {
     pub name: String,
     pub private: bool,
+    pub description: String
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct RepoArchive {
+    pub name: String,
     pub archived: bool
 }
 
@@ -28,7 +34,6 @@ impl GitHub {
         let folder = Path::new(&path);
         let content = fs::read_to_string(folder).unwrap();
         let cred: GitHub = serde_json::from_str(&content).unwrap();
-        // println!("{:?}", cred);
 
         cred
     }
@@ -36,10 +41,17 @@ impl GitHub {
 
 impl RepoCreation {
     pub fn new(name: String, private: bool) -> RepoCreation {
-        RepoCreation { name: name, private: private, archived: false }
+        RepoCreation { name: name, private: private, description: String::from("") }
     }
 
-    pub fn new_archive(name: String, arch: bool) -> RepoCreation {
-        RepoCreation { name: name, archived: arch, private: false }
+    
+    pub fn update(name: String, private: bool, description: String) -> RepoCreation {
+        RepoCreation { name: name, private: private, description }
+    }
+}
+
+impl RepoArchive {
+    pub fn new(name: String, arch: bool) -> RepoArchive {
+        RepoArchive { name: name, archived: arch }
     }
 }

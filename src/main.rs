@@ -40,6 +40,13 @@ fn main() {
                 .takes_value(true)
         )
         .arg(
+            Arg::with_name("description")
+                .help("description of the repo")
+                .short("d")
+                .long("description")
+                .takes_value(true)
+        )
+        .arg(
             Arg::with_name("username")
                 .help("git username")
                 .short("u")
