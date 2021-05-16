@@ -31,6 +31,19 @@ pub fn repo(git: clap::ArgMatches) {
                 None => println!("Repo name required")
             }
         },
+        Some("archive") => {
+            match git.value_of("name") {
+                Some(repo_name) => {
+                    let org = if git.is_present("org") {
+                        git.value_of("org")
+                    } else {
+                        Some("")
+                    };
+                    archive_repo(repo_name.to_string(), org.unwrap().to_string())
+                },
+                None => println!("Repo name required")
+            }
+        },
         Some(_) => println!("Invalid action"),
         None => println!("Type of action required")
     }
@@ -46,7 +59,7 @@ fn creation(name: String, org: String) {
     } else {
         format!("{}/orgs/{org}/repos", base_url, org=org)
     };
-    let payload = RepoCreation::new(name);
+    let payload = RepoCreation::new(name, false);
     let client = reqwest::blocking::Client::new();
     let resp = client.post(url)
         .header("Accept", "application/vnd.github.v3+json")
@@ -100,6 +113,42 @@ fn delete_repo(name: String, org: String) {
                 }
                 else {
                     println!("Not possible to delete repository");
+                    println!("Try update your credentials with");
+                    println!("gitmgt config -u <github username> -t <github token>");
+                }
+        },
+        Err(error) => {
+            println!("API request not successfull: {}", error);
+        }
+    }
+}
+
+fn archive_repo(name: String, org: String) {
+    println!("Archiving  repo...");
+    let cred = GitHub::get_credentials();
+    let base_url = "https://api.github.com";
+
+    let url = if org.is_empty() {
+        format!("{}/repos/{}/{}", base_url, cred.username, name)
+    } else {
+        format!("{}/repos/{owner}/{repo}", base_url, owner=org, repo=name)
+    };
+    let payload = RepoCreation::new(name, true);
+    let client = reqwest::blocking::Client::new();
+    let resp = client.patch(url)
+        .header("Accept", "application/vnd.github.v3+json")
+        .header("User-Agent", "reqwest")
+        .basic_auth(&cred.username, Some(cred.token))
+        .json(&payload)
+        .send();
+        
+        match resp {
+            Ok(response) => {
+                if response.status() == reqwest::StatusCode::from_u16(204).unwrap() {
+                    println!("Repository was deleted");
+                }
+                else {
+                    println!("Not possible to archive repository");
                     println!("Try update your credentials with");
                     println!("gitmgt config -u <github username> -t <github token>");
                 }

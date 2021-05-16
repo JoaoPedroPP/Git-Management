@@ -12,7 +12,8 @@ pub struct GitHub {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct RepoCreation {
-    pub name: String
+    pub name: String,
+    pub archived: bool
 }
 
 impl GitHub {
@@ -33,7 +34,7 @@ impl GitHub {
 }
 
 impl RepoCreation {
-    pub fn new(name: String) -> RepoCreation {
-        RepoCreation { name: name }
+    pub fn new(name: String, arch: bool) -> RepoCreation {
+        RepoCreation { name: name, archived: arch }
     }
 }
