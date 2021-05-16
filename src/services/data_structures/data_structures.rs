@@ -35,7 +35,11 @@ impl GitHub {
 }
 
 impl RepoCreation {
-    pub fn new(name: String, private: bool, arch: bool) -> RepoCreation {
-        RepoCreation { name: name, private: private, archived: arch }
+    pub fn new(name: String, private: bool) -> RepoCreation {
+        RepoCreation { name: name, private: private, archived: false }
+    }
+
+    pub fn new_archive(name: String, arch: bool) -> RepoCreation {
+        RepoCreation { name: name, archived: arch, private: false }
     }
 }

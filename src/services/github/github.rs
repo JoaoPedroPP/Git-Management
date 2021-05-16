@@ -60,7 +60,7 @@ fn creation(name: String, org: String, private: bool) {
     } else {
         format!("{}/orgs/{org}/repos", base_url, org=org)
     };
-    let payload = RepoCreation::new(name, private, false);
+    let payload = RepoCreation::new(name, private);
     let client = reqwest::blocking::Client::new();
     let resp = client.post(url)
         .header("Accept", "application/vnd.github.v3+json")
@@ -134,7 +134,7 @@ fn archive_repo(name: String, org: String) {
     } else {
         format!("{}/repos/{owner}/{repo}", base_url, owner=org, repo=name)
     };
-    let payload = RepoCreation::new(name, false, true);
+    let payload = RepoCreation::new_archive(name, true);
     let client = reqwest::blocking::Client::new();
     let resp = client.patch(url)
         .header("Accept", "application/vnd.github.v3+json")
