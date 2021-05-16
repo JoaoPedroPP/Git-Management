@@ -40,7 +40,9 @@ fn creation(name: String) {
                 println!("3. git push -u origin main");
             }
             else {
-                println!("Not possivle to create repository")
+                println!("Not possivle to create repository");
+                println!("Try update your credentials with");
+                println!("gitmgt config -u <github username> -t <github token>");
             }
         },
         Err(error) => {
