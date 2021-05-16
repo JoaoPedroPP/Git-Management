@@ -7,13 +7,27 @@ pub fn repo(git: clap::ArgMatches) {
     match git.value_of("action") {
         Some("create") => {
             match git.value_of("name") {
-                Some(repo_name) => creation(repo_name.to_string()),
+                Some(repo_name) => {
+                    let org = if git.is_present("org") {
+                        git.value_of("org")
+                    } else {
+                        Some("")
+                    };
+                    creation(repo_name.to_string(), org.unwrap().to_string())
+                },
                 None => println!("Repo name required")
             }
         },
         Some("delete") => {
             match git.value_of("name") {
-                Some(repo_name) => delete_repo(repo_name.to_string()),
+                Some(repo_name) => {
+                    let org = if git.is_present("org") {
+                        git.value_of("org")
+                    } else {
+                        Some("")
+                    };
+                    delete_repo(repo_name.to_string(), org.unwrap().to_string())
+                },
                 None => println!("Repo name required")
             }
         },
@@ -22,12 +36,16 @@ pub fn repo(git: clap::ArgMatches) {
     }
 }
 
-fn creation(name: String) {
+fn creation(name: String, org: String) {
     println!("Creating repo...");
     let cred = GitHub::get_credentials();
     let base_url = "https://api.github.com";
 
-    let url = format!("{}/user/repos", base_url);
+    let url = if org.is_empty() {
+        format!("{}/user/repos", base_url)
+    } else {
+        format!("{}/orgs/{org}/repos", base_url, org=org)
+    };
     let payload = RepoCreation::new(name);
     let client = reqwest::blocking::Client::new();
     let resp = client.post(url)
@@ -57,12 +75,17 @@ fn creation(name: String) {
     }
 }
 
-fn delete_repo(name: String) {
+fn delete_repo(name: String, org: String) {
     println!("Deleting repo...");
     let cred = GitHub::get_credentials();
     let base_url = "https://api.github.com";
 
-    let url = format!("{}/repos/{}/{}", base_url, cred.username, name);
+    // let url = format!("{}/repos/{}/{}", base_url, cred.username, name);
+    let url = if org.is_empty() {
+        format!("{}/repos/{}/{}", base_url, cred.username, name)
+    } else {
+        format!("{}/repos/{owner}/{repo}", base_url, owner=org, repo=name)
+    };
     let client = reqwest::blocking::Client::new();
     let resp = client.delete(url)
         .header("Accept", "application/vnd.github.v3+json")
