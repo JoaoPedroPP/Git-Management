@@ -14,6 +14,14 @@ pub struct GitHub {
 pub struct RepoCreation {
     pub name: String,
     pub private: bool,
+    pub description: String,
+    pub auto_init: bool
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct RepoUpdate {
+    pub name: String,
+    pub private: bool,
     pub description: String
 }
 
@@ -40,13 +48,13 @@ impl GitHub {
 }
 
 impl RepoCreation {
-    pub fn new(name: String, private: bool) -> RepoCreation {
-        RepoCreation { name: name, private: private, description: String::from("") }
+    pub fn new(name: String, private: bool, autoinit: bool) -> RepoCreation {
+        RepoCreation { name: name, private: private, description: String::from(""), auto_init: autoinit }
     }
 
     
-    pub fn update(name: String, private: bool, description: String) -> RepoCreation {
-        RepoCreation { name: name, private: private, description }
+    pub fn update(name: String, private: bool, description: String) -> RepoUpdate {
+        RepoUpdate { name: name, private: private, description }
     }
 }
 

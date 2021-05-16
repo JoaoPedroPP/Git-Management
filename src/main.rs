@@ -37,7 +37,6 @@ fn main() {
                 .help("is the repo private")
                 .short("p")
                 .long("private")
-                .takes_value(true)
         )
         .arg(
             Arg::with_name("description")
@@ -45,6 +44,12 @@ fn main() {
                 .short("d")
                 .long("description")
                 .takes_value(true)
+        )
+        .arg(
+            Arg::with_name("auto_init")
+                .help("the repo has auto_init")
+                .short("i")
+                .long("autoinit")
         )
         .arg(
             Arg::with_name("username")
