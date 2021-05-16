@@ -19,6 +19,13 @@ fn main() {
                 .index(2)
         )
         .arg(
+            Arg::with_name("name")
+                .help("repo name")
+                .short("n")
+                .long("name")
+                .takes_value(true)
+        )
+        .arg(
             Arg::with_name("username")
                 .help("git username")
                 .short("u")
@@ -37,6 +44,7 @@ fn main() {
     match matches.value_of("target") {
         Some("config") => services::config_github(matches),
         Some("config_github") => services::config_github(matches),
+        Some("github") => services::create_repo(matches),
         Some(_) => println!("Command not found"),
         None => println!("Invalid command"),
     };

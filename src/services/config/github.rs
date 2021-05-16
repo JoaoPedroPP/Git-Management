@@ -2,7 +2,6 @@ use std::fs::{File, create_dir_all};
 use std::io::prelude::*;
 use std::path::Path;
 use dirs::home_dir;
-// use serde::{Deserialize, Serialize};
 use serde_json;
 
 use crate::services::GitHub;
@@ -20,7 +19,6 @@ pub fn config_github(git: clap::ArgMatches) {
 }
 
 fn set_github(user: &str, token: &str) {
-    // let cred: GitHub = GitHub::new(user, token);
     let cred: GitHub = GitHub::new(user, token);
     let text = serde_json::to_vec(&cred).unwrap();
     let home: String = home_dir().unwrap().to_str().unwrap().to_string();
