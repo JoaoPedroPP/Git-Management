@@ -33,6 +33,13 @@ fn main() {
                 .takes_value(true)
         )
         .arg(
+            Arg::with_name("private")
+                .help("is the repo private")
+                .short("p")
+                .long("private")
+                .takes_value(true)
+        )
+        .arg(
             Arg::with_name("username")
                 .help("git username")
                 .short("u")

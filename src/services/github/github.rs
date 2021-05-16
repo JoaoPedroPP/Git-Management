@@ -13,7 +13,8 @@ pub fn repo(git: clap::ArgMatches) {
                     } else {
                         Some("")
                     };
-                    creation(repo_name.to_string(), org.unwrap().to_string())
+                    let private = git.is_present("private");
+                    creation(repo_name.to_string(), org.unwrap().to_string(), private)
                 },
                 None => println!("Repo name required")
             }
@@ -49,7 +50,7 @@ pub fn repo(git: clap::ArgMatches) {
     }
 }
 
-fn creation(name: String, org: String) {
+fn creation(name: String, org: String, private: bool) {
     println!("Creating repo...");
     let cred = GitHub::get_credentials();
     let base_url = "https://api.github.com";
@@ -59,7 +60,7 @@ fn creation(name: String, org: String) {
     } else {
         format!("{}/orgs/{org}/repos", base_url, org=org)
     };
-    let payload = RepoCreation::new(name, false);
+    let payload = RepoCreation::new(name, private, false);
     let client = reqwest::blocking::Client::new();
     let resp = client.post(url)
         .header("Accept", "application/vnd.github.v3+json")
@@ -133,7 +134,7 @@ fn archive_repo(name: String, org: String) {
     } else {
         format!("{}/repos/{owner}/{repo}", base_url, owner=org, repo=name)
     };
-    let payload = RepoCreation::new(name, true);
+    let payload = RepoCreation::new(name, false, true);
     let client = reqwest::blocking::Client::new();
     let resp = client.patch(url)
         .header("Accept", "application/vnd.github.v3+json")
