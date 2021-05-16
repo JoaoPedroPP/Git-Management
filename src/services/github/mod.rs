@@ -1,3 +1,3 @@
 mod github;
 
-pub use github::create_repo;
+pub use github::repo;

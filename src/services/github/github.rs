@@ -3,7 +3,7 @@ use crate::services::RepoCreation;
 
 use serde_json;
 
-pub fn create_repo(git: clap::ArgMatches) {
+pub fn repo(git: clap::ArgMatches) {
     match git.value_of("action") {
         Some("create") => {
             match git.value_of("name") {
