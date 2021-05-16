@@ -1,5 +1,5 @@
 [package]
-name = "repo_maker"
+name = "gitmgt"
 version = "0.1.0"
 authors = ["JoaoPedroPP <poloniponce@protonmail.ch>"]
 edition = "2018"
