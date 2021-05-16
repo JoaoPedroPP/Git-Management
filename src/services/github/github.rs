@@ -11,6 +11,12 @@ pub fn create_repo(git: clap::ArgMatches) {
                 None => println!("Repo name required")
             }
         },
+        Some("delete") => {
+            match git.value_of("name") {
+                Some(repo_name) => delete_repo(repo_name.to_string()),
+                None => println!("Repo name required")
+            }
+        },
         Some(_) => println!("Invalid action"),
         None => println!("Type of action required")
     }
@@ -40,10 +46,40 @@ fn creation(name: String) {
                 println!("3. git push -u origin main");
             }
             else {
-                println!("Not possivle to create repository");
+                println!("Not possible to create repository");
                 println!("Try update your credentials with");
                 println!("gitmgt config -u <github username> -t <github token>");
             }
+        },
+        Err(error) => {
+            println!("API request not successfull: {}", error);
+        }
+    }
+}
+
+fn delete_repo(name: String) {
+    println!("Deleting repo...");
+    let cred = GitHub::get_credentials();
+    let base_url = "https://api.github.com";
+
+    let url = format!("{}/repos/{}/{}", base_url, cred.username, name);
+    let client = reqwest::blocking::Client::new();
+    let resp = client.delete(url)
+        .header("Accept", "application/vnd.github.v3+json")
+        .header("User-Agent", "reqwest")
+        .basic_auth(&cred.username, Some(cred.token))
+        .send();
+        
+        match resp {
+            Ok(response) => {
+                if response.status() == reqwest::StatusCode::from_u16(204).unwrap() {
+                    println!("Repository was deleted");
+                }
+                else {
+                    println!("Not possible to delete repository");
+                    println!("Try update your credentials with");
+                    println!("gitmgt config -u <github username> -t <github token>");
+                }
         },
         Err(error) => {
             println!("API request not successfull: {}", error);
