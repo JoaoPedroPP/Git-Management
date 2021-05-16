@@ -166,8 +166,8 @@ fn archive_repo(name: String, org: String) {
         
         match resp {
             Ok(response) => {
-                if response.status() == reqwest::StatusCode::from_u16(204).unwrap() {
-                    println!("Repository was deleted");
+                if response.status() == reqwest::StatusCode::from_u16(200).unwrap() {
+                    println!("Repository was archived");
                 }
                 else {
                     println!("Not possible to archive repository");
@@ -206,7 +206,7 @@ fn update(name: String, org: String, private: bool, description: String) {
                 println!("Updated");
             }
             else {
-                println!("Not possible to create repository");
+                println!("Not possible to update repository");
                 println!("Try update your credentials with");
                 println!("gitmgt config -u <github username> -t <github token>");
             }
