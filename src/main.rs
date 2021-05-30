@@ -2,7 +2,7 @@ use clap::{Arg, App};
 mod services;
 
 fn main() {
-    let matches = App::new("Code Repository Manipulation with Command Line Interace")
+    let mut matches = App::new("Code Repository Manipulation with Command Line Interace")
         .version("1.0")
         .author("Joao Pedro Poloni Ponce <poloniponce@protonmail.ch>")
         .arg(
@@ -66,6 +66,20 @@ fn main() {
                 .takes_value(true)
         )
         .get_matches();
+
+    if matches.args.get("target").unwrap().vals[0] == "create" ||
+        matches.args.get("target").unwrap().vals[0] == "delete" ||
+        matches.args.get("target").unwrap().vals[0] == "pullrequest" {
+        let mut target = matches.args.get("target").unwrap().clone();
+        matches.args.insert("action", target.clone());
+        target.vals[0] = std::ffi::OsString::from("github".to_string());
+        matches.args.insert("target", target.clone());
+        for i in matches.args.values_mut() {
+            if i.vals[0] != "github" {
+                i.indices[0] = i.indices[0]+1;
+            }
+        }
+    }
 
     match matches.value_of("target") {
         Some("config") => services::config_github(matches),
