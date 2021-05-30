@@ -38,7 +38,7 @@ impl GitHub {
 
     pub fn get_credentials() -> GitHub {
         let home: String = home_dir().unwrap().to_str().unwrap().to_string();
-        let path = format!("{}/.repo_maker/github.json", home);
+        let path = format!("{}/.gitmgt/github.json", home);
         let folder = Path::new(&path);
         let content = fs::read_to_string(folder).unwrap();
         let cred: GitHub = serde_json::from_str(&content).unwrap();

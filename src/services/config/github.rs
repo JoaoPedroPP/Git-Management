@@ -22,7 +22,7 @@ fn set_github(user: &str, token: &str) {
     let cred: GitHub = GitHub::new(user, token);
     let text = serde_json::to_vec(&cred).unwrap();
     let home: String = home_dir().unwrap().to_str().unwrap().to_string();
-    let path = format!("{}/.repo_maker", home);
+    let path = format!("{}/.gitmgt", home);
     let folder = Path::new(&path);
     match create_dir_all(folder) {
         Ok(_) => (),
@@ -30,7 +30,7 @@ fn set_github(user: &str, token: &str) {
             println!("{:?}", err);
         }
     };
-    let file_path = format!("{}/.repo_maker/github.json", home);
+    let file_path = format!("{}/.gitmgt/github.json", home);
     let mut file = File::create(file_path).unwrap();
     file.write_all(&text).unwrap();
     println!("Credentials upadated");
