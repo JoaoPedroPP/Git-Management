@@ -3,6 +3,7 @@ name = "gitmgt"
 version = "0.1.0"
 authors = ["JoaoPedroPP <poloniponce@protonmail.ch>"]
 edition = "2018"
+description = "An easy way to create your git repository without leaving your project"
 repository = "https://github.com/JoaoPedroPP/Git-Management"
 readme = "README.md"
 license = "Apache-2.0"
