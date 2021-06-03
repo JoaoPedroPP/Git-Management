@@ -1,4 +1,57 @@
+![GitHub contributors](https://img.shields.io/github/contributors/joaopedropp/git-management?style=flat-square)
+[![GitHub issues](https://img.shields.io/github/issues/joaopedropp/git-management?style=flat-square)](https://github.com/joaopedropp/git-management/issues)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](https://github.com/JoaoPedroPP/Git-Management/blob/main/LICENSE)
+<!-- [![GitHub stars](https://img.shields.io/github/stars/joaopedropp/git-management?style=flat-square)](https://github.com/joaopedropp/git-management/stargazers) -->
+
 # Git Management CLI
+
+
+## About The Project
+
+lorem ipsum about the project
+
+### Built With
+
+* [Rust](https://www.rust-lang.org/)
+* [Cargo](https://crates.io/)
+* [Clap](https://github.com/clap-rs/clap)
+
+
+
+## Getting Started
+
+lorem ipsum getting started
+
+### Prerequisites
+
+Lorem ipsum getting started
+* Rust
+* Cargo
+
+### Installation
+
+1. Lorem
+2. ipsum
+
+
+## Usage
+
+lorem ipsum
+
+_For more examples, please refer to the [Documentation](https://github.com/joaopedropp/gitmanagement/README.md)_
+
+
+
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
