@@ -48,8 +48,8 @@ impl GitHub {
 }
 
 impl RepoCreation {
-    pub fn new(name: String, private: bool, autoinit: bool) -> RepoCreation {
-        RepoCreation { name: name, private: private, description: String::from(""), auto_init: autoinit }
+    pub fn new(name: String, private: bool, autoinit: bool, description: String) -> RepoCreation {
+        RepoCreation { name: name, private: private, description: description, auto_init: autoinit }
     }
 
     
