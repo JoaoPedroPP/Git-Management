@@ -37,6 +37,14 @@ Other option is to download the code from this repository and build it manualy b
 
 Once it finish the the tool is ready to use and you can type `gitmgt --version` just to check.
 
+After the installation process finish, to stat using gitmgt cli the user will have to insert the Github credentials to have access to all the set tool. The user just need to create a new `personal access token` in Github portal and then just type in a terminal
+
+```sh
+gitmgt config -u github_username -t personal_access_token
+```
+
+After this all the commands are ready to be used.
+
 ## Usage
 
 Update Github credentials
