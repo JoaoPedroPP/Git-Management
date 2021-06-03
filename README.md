@@ -8,40 +8,106 @@
 
 ## About The Project
 
-lorem ipsum about the project
+Have you just wonder how good it would be if you could code your project and once you think it's time to publish on a version control host like GitHub you could just type a command line and it set up your repository ? That's what Git Management CLI, gitmgt, gives to you, now you don't need to leave your project's environment to manually create you repository on GitHub, you just need to type `gitmgt create -n awesome_repo` and then push your project.
 
 ### Built With
 
 * [Rust](https://www.rust-lang.org/)
-* [Cargo](https://crates.io/)
 * [Clap](https://github.com/clap-rs/clap)
-
 
 
 ## Getting Started
 
-lorem ipsum getting started
-
 ### Prerequisites
 
-Lorem ipsum getting started
+To install gitmgt is necessary your machine has the following prerequisites:
 * Rust
 * Cargo
 
 ### Installation
 
-1. Lorem
-2. ipsum
+#### Cargo
+The easiest, and recommended way to install gitmgt is to download directly by [crates.io](https://crates.io/) typing `cargo install gitmgt` in a terminal.
 
+Once it finish the the tool is ready to use and you can type `gitmgt --version` just to check.
+
+#### Build from source
+
+Other option is to download the code from this repository and build it manualy by typing `cargo build --release` in a terminal and when cargo process finish just move the binary file from `target/release/` directory to where you think is better and add the binary path to the `$PATH`.
+
+Once it finish the the tool is ready to use and you can type `gitmgt --version` just to check.
 
 ## Usage
 
-lorem ipsum
+Update Github credentials
+```sh
+gitmgt github_config -u github_username -t github_token
+```
 
-_For more examples, please refer to the [Documentation](https://github.com/joaopedropp/gitmanagement/README.md)_
+Github Repository creation
+```sh
+gitmgt create -n awesome_repository_name
+```
 
+since Github is the most common version control service, it is the default option and its indication can be suppressed.
+```sh
+gitmgt github create -n awesome_repository_name
+```
 
+Org's repository creation
+```sh
+gitmgt github create -o orr_name -n awesome_repository_name
+```
 
+Private repository creation
+```sh
+gitmgt github create -n awesome_repository_name -p
+```
+
+Auto init repository creation
+```sh
+gitmgt github create -n awesome_repository_name -i
+```
+
+Repository deletion
+```sh
+gitmgt delete -n awesome_repository_name
+```
+
+Org's repository deletion
+```sh
+gitmgt delete -o org_name -n awesome_repository_name
+```
+
+Repository archiving
+```sh
+gitmgt archive -n awesome_repository_name
+```
+
+Org's repository archiving
+```sh
+gitmgt archive -o org_name -n awesome_repository_name
+```
+
+Repository's description update
+```sh
+gitmgt update -n awesome_repository_name -d "update awesome description od the repo"
+```
+
+Repository's visibility update public to private
+```sh
+gitmgt update -n awesome_repository_name -i
+```
+
+Repository's visibility update private to public
+```sh
+gitmgt update -n awesome_repository_name
+```
+
+Looking for help
+```sh
+gitmgt --help
+```
 
 ## Contributing
 
