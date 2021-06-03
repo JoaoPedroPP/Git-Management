@@ -7,14 +7,14 @@ fn main() {
         .author("Joao Pedro Poloni Ponce <poloniponce@protonmail.ch>")
         .arg(
             Arg::with_name("target")
-                .help("Selected target config_github | github")
+                .help("Selected target: config_github | github")
                 .takes_value(true)
                 .index(1)
                 .required(true)
         )
         .arg(
             Arg::with_name("action")
-                .help("create | pullrequest")
+                .help("Select an action: create | delete | archive | update | pullrequest")
                 .takes_value(true)
                 .index(2)
         )
