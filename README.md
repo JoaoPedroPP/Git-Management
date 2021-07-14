@@ -8,7 +8,7 @@
 
 ## About The Project
 
-Have you just wonder how good it would be if you could code your project and once you think it's time to publish on a version control host like GitHub you could just type a command line and it set up your repository ? That's what Git Management CLI, gitmgt, gives to you, now you don't need to leave your project's environment to manually create you repository on GitHub, you just need to type `gitmgt create -n awesome_repo` and then push your project.
+Have you ever wondered how nice it would be if you could code your project and when you think it is time to publish it on a version control host like GitHub you could just type a command line and it sets up your repository? That is what Git Management CLI, gitmgt, gives to you. Now you do not need to leave your project's environment to manually create you repository on GitHub, you just need to type `gitmgt create -n awesome_repo` and then push your project.
 
 ### Built With
 
@@ -20,7 +20,8 @@ Have you just wonder how good it would be if you could code your project and onc
 
 ### Prerequisites
 
-To install gitmgt is necessary your machine has the following prerequisites:
+To install gitmgt it is necessary that your machine has the following prerequisites:
+
 * Rust
 * Cargo
 
@@ -29,7 +30,7 @@ To install gitmgt is necessary your machine has the following prerequisites:
 #### Cargo
 The easiest, and recommended way to install gitmgt is to download directly by [crates.io](https://crates.io/) typing `cargo install gitmgt` in a terminal.
 
-Once it finish the the tool is ready to use and you can type `gitmgt --version` just to check.
+Once it is finished, the tool is ready to be used and you can type `gitmgt --version` just to check.
 
 #### Build from source
 
@@ -37,7 +38,7 @@ Other option is to download the code from this repository and build it manualy b
 
 Once it finish the the tool is ready to use and you can type `gitmgt --version` just to check.
 
-After the installation process finish, to stat using gitmgt cli the user will have to insert the Github credentials to have access to all the set tool. The user just need to create a new `personal access token` in Github portal and then just type in a terminal
+After the installation process finishes, to start using gitmgt cli the user will have to insert the Github credentials to have access to all the set tools. The user just need to create a new `personal access token` in Github portal and then just type in a terminal
 
 ```sh
 gitmgt config -u github_username -t personal_access_token
