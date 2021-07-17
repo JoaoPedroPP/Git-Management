@@ -34,11 +34,11 @@ Once it is finished, the tool is ready to be used and you can type `gitmgt --ver
 
 #### Build from source
 
-Other option is to download the code from this repository and build it manualy by typing `cargo build --release` in a terminal and when cargo process finish just move the binary file from `target/release/` directory to where you think is better and add the binary path to the `$PATH`.
+Other option is to download the code from this repository and build it manualy by typing `cargo build --release` in a terminal and when cargo process finishes just move the binary file from `target/release/` directory to where you think is better and add the binary path to the `$PATH`.
 
-Once it finish the the tool is ready to use and you can type `gitmgt --version` just to check.
+Once it is finished the the tool is ready to use and you can type `gitmgt --version` just to check.
 
-After the installation process finishes, to start using gitmgt cli the user will have to insert the Github credentials to have access to all the set tools. The user just need to create a new `personal access token` in Github portal and then just type in a terminal
+After the installation process finishes, to start using gitmgt cli the user will have to insert the Github credentials to have access to all the set tools. The user just needs to create a new `personal access token` in Github portal and then just type in a terminal
 
 ```sh
 gitmgt config -u github_username -t personal_access_token
@@ -120,7 +120,7 @@ gitmgt --help
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
