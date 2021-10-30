@@ -93,6 +93,13 @@ fn main() {
                 .long("body")
                 .takes_value(true)
         )
+        .arg(
+            Arg::with_name("state")
+                .help("state filter of the pull request")
+                .short("s")
+                .long("state")
+                .takes_value(true)
+        )
         .get_matches();
 
     if matches.args.get("target").unwrap().vals[0] == "create" ||

@@ -113,7 +113,12 @@ pub fn repo(git: clap::ArgMatches) {
                     } else {
                         Some("")
                     };
-                    list_pr(repo_name.to_string(), org.unwrap().to_string())
+                    let state = if git.is_present("state") {
+                        git.value_of("state")
+                    } else {
+                        Some("all")
+                    };
+                    list_pr(repo_name.to_string(), org.unwrap().to_string(), state.unwrap().to_string());
                 },
                 None => println!("Repo name required")
             }
@@ -313,14 +318,14 @@ fn pull_request(name: String, org: String, title: String, head: String, base: St
     }
 }
 
-fn list_pr(name: String, org: String) {
+fn list_pr(name: String, org: String, state: String) {
     let cred = GitHub::get_credentials();
     let base_url = "https://api.github.com";
 
     let url = if org.is_empty() {
-        format!("{}/repos/{owner}/{repo}/pulls", base_url, owner=cred.username, repo=name)
+        format!("{}/repos/{owner}/{repo}/pulls?state={state}", base_url, owner=cred.username, repo=name, state=state)
     } else {
-        format!("{}/repos/{owner}/{repo}/pulls", base_url, owner=org, repo=name)
+        format!("{}/repos/{owner}/{repo}/pulls?state={state}", base_url, owner=org, repo=name, state=state)
     };
     let client = reqwest::blocking::Client::new();
     let resp = client.get(url)
