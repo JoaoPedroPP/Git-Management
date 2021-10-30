@@ -65,6 +65,34 @@ fn main() {
                 .long("token")
                 .takes_value(true)
         )
+        .arg(
+            Arg::with_name("head")
+                .help("head branch, the one you want to merge")
+                .short("H")
+                .long("head")
+                .takes_value(true)
+        )
+        .arg(
+            Arg::with_name("base")
+                .help("base branch, the one you want to insert changes from head branch")
+                .short("B")
+                .long("base")
+                .takes_value(true)
+        )
+        .arg(
+            Arg::with_name("title")
+                .help("title of the pull request")
+                .short("T")
+                .long("title")
+                .takes_value(true)
+        )
+        .arg(
+            Arg::with_name("body")
+                .help("body of the pull request")
+                .short("b")
+                .long("body")
+                .takes_value(true)
+        )
         .get_matches();
 
     if matches.args.get("target").unwrap().vals[0] == "create" ||

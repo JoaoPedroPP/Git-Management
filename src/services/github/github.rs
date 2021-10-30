@@ -1,6 +1,7 @@
 use crate::services::GitHub;
 use crate::services::RepoCreation;
 use crate::services::RepoArchive;
+use crate::services::PullRequest;
 
 use serde_json;
 
@@ -67,6 +68,39 @@ pub fn repo(git: clap::ArgMatches) {
                     };
                     let private = git.is_present("private");
                     update(repo_name.to_string(), org.unwrap().to_string(), private, description.unwrap().to_string())
+                },
+                None => println!("Repo name required")
+            }
+        },
+        Some("pullrequest") => {
+            match git.value_of("name") {
+                Some(repo_name) => {
+                    match git.value_of("head") {
+                        Some(head) => {
+                            match git.value_of("base") {
+                                Some(base) => {
+                                    match git.value_of("title") {
+                                        Some(title) => {
+                                            let org = if git.is_present("org") {
+                                                git.value_of("org")
+                                            } else {
+                                                Some("")
+                                            };
+                                            let body = if git.is_present("body") {
+                                                git.value_of("body")
+                                            } else {
+                                                Some("")
+                                            };
+                                            pull_request(repo_name.to_string(), org.unwrap().to_string(), title.to_string(), head.to_string(), base.to_string(), body.unwrap().to_string())
+                                        },
+                                        None => println!("Title of the pull request necessary")
+                                    }
+                                },
+                                None => println!("Base branch necessary to pull request")
+                            }
+                        },
+                        None => println!("Head branch necessary to pull request")
+                    }
                 },
                 None => println!("Repo name required")
             }
@@ -215,6 +249,49 @@ fn update(name: String, org: String, private: bool, description: String) {
                 println!("Try update your credentials with");
                 println!("gitmgt config -u <github username> -t <github token>");
             }
+        },
+        Err(error) => {
+            println!("API request not successfull: {}", error);
+        }
+    }
+}
+
+fn pull_request(name: String, org: String, title: String, head: String, base: String, body: String) {
+    println!("Creating pull request...");
+    let cred = GitHub::get_credentials();
+    let base_url = "https://api.github.com";
+
+    let url = if org.is_empty() {
+        format!("{}/repos/{owner}/{repo}/pulls", base_url, owner=cred.username, repo=name)
+    } else {
+        format!("{}/repos/{owner}/{repo}/pulls", base_url, owner=org, repo=name)
+    };
+    let payload = PullRequest::new(title, head, base, body);
+    // println!("URL: {}", url);
+    // println!("{:?}", payload);
+    let client = reqwest::blocking::Client::new();
+    let resp = client.post(url)
+        .header("Accept", "application/vnd.github.v3+json")
+        .header("User-Agent", "reqwest")
+        .basic_auth(&cred.username, Some(cred.token))
+        .json(&payload)
+        .send();
+        
+        match resp {
+            Ok(response) => {
+                if response.status() == reqwest::StatusCode::from_u16(201).unwrap() {
+                    let raw = response.json::<serde_json::Value>().unwrap();
+                    println!("Pull Request created at: {}", raw.get("html_url").unwrap());
+                }
+                else if response.status() == reqwest::StatusCode::from_u16(422).unwrap() {
+                    let raw = response.json::<serde_json::Value>().unwrap();
+                    println!("{}", raw.get("errors").unwrap()[0].get("message").unwrap());
+                }
+                else {
+                    println!("Not possible to create the pull request");
+                    println!("Try update your credentials with");
+                    println!("gitmgt config -u <github username> -t <github token>");
+                }
         },
         Err(error) => {
             println!("API request not successfull: {}", error);
