@@ -105,6 +105,19 @@ pub fn repo(git: clap::ArgMatches) {
                 None => println!("Repo name required")
             }
         },
+        Some("listpr") => {
+            match git.value_of("name") {
+                Some(repo_name) => {
+                    let org = if git.is_present("org") {
+                        git.value_of("org")
+                    } else {
+                        Some("")
+                    };
+                    list_pr(repo_name.to_string(), org.unwrap().to_string())
+                },
+                None => println!("Repo name required")
+            }
+        }
         Some(_) => println!("Invalid action"),
         None => println!("Type of action required")
     }
@@ -256,6 +269,7 @@ fn update(name: String, org: String, private: bool, description: String) {
     }
 }
 
+// Pull request section
 fn pull_request(name: String, org: String, title: String, head: String, base: String, body: String) {
     println!("Creating pull request...");
     let cred = GitHub::get_credentials();
@@ -292,6 +306,37 @@ fn pull_request(name: String, org: String, title: String, head: String, base: St
                     println!("Try update your credentials with");
                     println!("gitmgt config -u <github username> -t <github token>");
                 }
+        },
+        Err(error) => {
+            println!("API request not successfull: {}", error);
+        }
+    }
+}
+
+fn list_pr(name: String, org: String) {
+    let cred = GitHub::get_credentials();
+    let base_url = "https://api.github.com";
+
+    let url = if org.is_empty() {
+        format!("{}/repos/{owner}/{repo}/pulls", base_url, owner=cred.username, repo=name)
+    } else {
+        format!("{}/repos/{owner}/{repo}/pulls", base_url, owner=org, repo=name)
+    };
+    let client = reqwest::blocking::Client::new();
+    let resp = client.get(url)
+        .header("Accept", "application/vnd.github.v3+json")
+        .header("User-Agent", "reqwest")
+        .basic_auth(&cred.username, Some(cred.token))
+        .send();
+
+    match resp {
+        Ok(response) => {
+            if response.status() == reqwest::StatusCode::from_u16(200).unwrap() {
+                let raw = response.json::<serde_json::Value>().unwrap();
+                for pr in raw.as_array().unwrap() {
+                    println!("PR: {title}, State: {state} -> {url}", title=pr.get("title").unwrap().as_str().unwrap(), state=pr.get("state").unwrap().as_str().unwrap(), url=pr.get("html_url").unwrap().as_str().unwrap());
+                }
+            }
         },
         Err(error) => {
             println!("API request not successfull: {}", error);
