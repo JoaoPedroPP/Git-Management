@@ -30,6 +30,7 @@ fn main() {
                 .help("org name")
                 .short("o")
                 .long("org")
+                .default_value("")
                 .takes_value(true)
         )
         .arg(
@@ -43,6 +44,7 @@ fn main() {
                 .help("description of the repo")
                 .short("d")
                 .long("description")
+                .default_value("")
                 .takes_value(true)
         )
         .arg(
@@ -91,6 +93,7 @@ fn main() {
                 .help("body of the pull request")
                 .short("b")
                 .long("body")
+                .default_value("")
                 .takes_value(true)
         )
         .arg(

@@ -11,16 +11,8 @@ pub fn repo(git: clap::ArgMatches) {
         Some("create") => {
             match git.value_of("name") {
                 Some(repo_name) => {
-                    let org = if git.is_present("org") {
-                        git.value_of("org")
-                    } else {
-                        Some("")
-                    };
-                    let description = if git.is_present("description") {
-                        git.value_of("description")
-                    } else {
-                        Some("")
-                    };
+                    let org = git.value_of("org");
+                    let description = git.value_of("description");
                     let private = git.is_present("private");
                     let auto_init = git.is_present("auto_init");
                     creation(repo_name.to_string(), org.unwrap().to_string(), private, auto_init, description.unwrap().to_string())
@@ -31,11 +23,7 @@ pub fn repo(git: clap::ArgMatches) {
         Some("delete") => {
             match git.value_of("name") {
                 Some(repo_name) => {
-                    let org = if git.is_present("org") {
-                        git.value_of("org")
-                    } else {
-                        Some("")
-                    };
+                    let org = git.value_of("org");
                     delete_repo(repo_name.to_string(), org.unwrap().to_string())
                 },
                 None => println!("Repo name required")
@@ -44,11 +32,7 @@ pub fn repo(git: clap::ArgMatches) {
         Some("archive") => {
             match git.value_of("name") {
                 Some(repo_name) => {
-                    let org = if git.is_present("org") {
-                        git.value_of("org")
-                    } else {
-                        Some("")
-                    };
+                    let org = git.value_of("org");
                     archive_repo(repo_name.to_string(), org.unwrap().to_string())
                 },
                 None => println!("Repo name required")
@@ -57,16 +41,8 @@ pub fn repo(git: clap::ArgMatches) {
         Some("update") => {
             match git.value_of("name") {
                 Some(repo_name) => {
-                    let org = if git.is_present("org") {
-                        git.value_of("org")
-                    } else {
-                        Some("")
-                    };
-                    let description = if git.is_present("description") {
-                        git.value_of("description")
-                    } else {
-                        Some("")
-                    };
+                    let org = git.value_of("org");
+                    let description = git.value_of("description");
                     let private = git.is_present("private");
                     update(repo_name.to_string(), org.unwrap().to_string(), private, description.unwrap().to_string())
                 },
@@ -82,16 +58,8 @@ pub fn repo(git: clap::ArgMatches) {
                                 Some(base) => {
                                     match git.value_of("title") {
                                         Some(title) => {
-                                            let org = if git.is_present("org") {
-                                                git.value_of("org")
-                                            } else {
-                                                Some("")
-                                            };
-                                            let body = if git.is_present("body") {
-                                                git.value_of("body")
-                                            } else {
-                                                Some("")
-                                            };
+                                            let org = git.value_of("org");
+                                            let body = git.value_of("body");
                                             pull_request(repo_name.to_string(), org.unwrap().to_string(), title.to_string(), head.to_string(), base.to_string(), body.unwrap().to_string())
                                         },
                                         None => println!("Title of the pull request necessary")
@@ -109,11 +77,7 @@ pub fn repo(git: clap::ArgMatches) {
         Some("listpr") => {
             match git.value_of("name") {
                 Some(repo_name) => {
-                    let org = if git.is_present("org") {
-                        git.value_of("org")
-                    } else {
-                        Some("")
-                    };
+                    let org = git.value_of("org");
                     let state = git.value_of("state");
                     list_pr(repo_name.to_string(), org.unwrap().to_string(), state.unwrap().to_string());
                 },
@@ -127,11 +91,7 @@ pub fn repo(git: clap::ArgMatches) {
                         Some(merge) => {
                             match git.value_of("pullrequest_number") {
                                 Some(prn) => {
-                                    let org = if git.is_present("org") {
-                                        git.value_of("org")
-                                    } else {
-                                        Some("")
-                                    };
+                                    let org = git.value_of("org");
                                     merge_pr(repo_name.to_string(), org.unwrap().to_string(), prn.to_string(), merge.to_string());
 
                                 },
