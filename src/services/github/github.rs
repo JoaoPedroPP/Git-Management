@@ -365,7 +365,7 @@ fn list_pr(name: String, org: String, state: String) {
                     println!("PR: {title}, State: {state}, Number: {number} -> {url}",
                         title=pr.get("title").unwrap().as_str().unwrap(),
                         state=pr.get("state").unwrap().as_str().unwrap(),
-                        number=pr.get("number").unwrap().as_str().unwrap(),
+                        number=pr.get("number").unwrap().as_i64().unwrap(),
                         url=pr.get("html_url").unwrap().as_str().unwrap());
                 }
             }

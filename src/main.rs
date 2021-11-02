@@ -98,6 +98,7 @@ fn main() {
                 .help("state filter of the pull request")
                 .short("s")
                 .long("state")
+                .default_value("all")
                 .takes_value(true)
         )
         .arg(
@@ -105,6 +106,7 @@ fn main() {
                 .help("merge method of the pull request")
                 .short("M")
                 .long("merge")
+                .validator(services::check_merge_methods)
                 .takes_value(true)
         )
         .arg(
