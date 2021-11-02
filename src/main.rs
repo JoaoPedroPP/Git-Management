@@ -100,6 +100,20 @@ fn main() {
                 .long("state")
                 .takes_value(true)
         )
+        .arg(
+            Arg::with_name("merge_method")
+                .help("merge method of the pull request")
+                .short("M")
+                .long("merge")
+                .takes_value(true)
+        )
+        .arg(
+            Arg::with_name("pullrequest_number")
+                .help("Number of the pull request")
+                .short("N")
+                .long("pullnumber")
+                .takes_value(true)
+        )
         .get_matches();
 
     if matches.args.get("target").unwrap().vals[0] == "create" ||

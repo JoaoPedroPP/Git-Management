@@ -2,6 +2,7 @@ use crate::services::GitHub;
 use crate::services::RepoCreation;
 use crate::services::RepoArchive;
 use crate::services::PullRequest;
+use crate::services::MergePR;
 
 use serde_json;
 
@@ -122,7 +123,31 @@ pub fn repo(git: clap::ArgMatches) {
                 },
                 None => println!("Repo name required")
             }
-        }
+        },
+        Some("merge") => {
+            match git.value_of("name") {
+                Some(repo_name) => {
+                    match git.value_of("merge_method") {
+                        Some(merge) => {
+                            match git.value_of("pullrequest_number") {
+                                Some(prn) => {
+                                    let org = if git.is_present("org") {
+                                        git.value_of("org")
+                                    } else {
+                                        Some("")
+                                    };
+                                    merge_pr(repo_name.to_string(), org.unwrap().to_string(), prn.to_string(), merge.to_string());
+
+                                },
+                                None => println!("Pull Request number required")
+                            }
+                        },
+                        None => println!("Merge method required. merge|squash|rebase")
+                    }
+                },
+                None => println!("Repo name required")
+            }
+        },
         Some(_) => println!("Invalid action"),
         None => println!("Type of action required")
     }
@@ -286,8 +311,6 @@ fn pull_request(name: String, org: String, title: String, head: String, base: St
         format!("{}/repos/{owner}/{repo}/pulls", base_url, owner=org, repo=name)
     };
     let payload = PullRequest::new(title, head, base, body);
-    // println!("URL: {}", url);
-    // println!("{:?}", payload);
     let client = reqwest::blocking::Client::new();
     let resp = client.post(url)
         .header("Accept", "application/vnd.github.v3+json")
@@ -339,8 +362,63 @@ fn list_pr(name: String, org: String, state: String) {
             if response.status() == reqwest::StatusCode::from_u16(200).unwrap() {
                 let raw = response.json::<serde_json::Value>().unwrap();
                 for pr in raw.as_array().unwrap() {
-                    println!("PR: {title}, State: {state} -> {url}", title=pr.get("title").unwrap().as_str().unwrap(), state=pr.get("state").unwrap().as_str().unwrap(), url=pr.get("html_url").unwrap().as_str().unwrap());
+                    println!("PR: {title}, State: {state}, Number: {number} -> {url}",
+                        title=pr.get("title").unwrap().as_str().unwrap(),
+                        state=pr.get("state").unwrap().as_str().unwrap(),
+                        number=pr.get("number").unwrap().as_str().unwrap(),
+                        url=pr.get("html_url").unwrap().as_str().unwrap());
                 }
+            }
+        },
+        Err(error) => {
+            println!("API request not successfull: {}", error);
+        }
+    }
+}
+
+fn merge_pr(name: String, org: String, prn: String, merge: String) {
+    let cred = GitHub::get_credentials();
+    let base_url = "https://api.github.com";
+
+    let url = if org.is_empty() {
+        format!("{}/repos/{owner}/{repo}/pulls/{pull_number}/merge", base_url, owner=cred.username, repo=name, pull_number=prn)
+    } else {
+        format!("{}/repos/{owner}/{repo}/pulls/{pull_number}/merge", base_url, owner=org, repo=name, pull_number=prn)
+    };
+    let payload: MergePR = MergePR::new(merge);
+    let client = reqwest::blocking::Client::new();
+    let resp = client.put(url)
+        .header("Accept", "application/vnd.github.v3+json")
+        .header("User-Agent", "reqwest")
+        .basic_auth(&cred.username, Some(cred.token))
+        .json(&payload)
+        .send();
+
+    match resp {
+        Ok(response) => {
+            if response.status() == reqwest::StatusCode::from_u16(200).unwrap() {
+                let raw = response.json::<serde_json::Value>().unwrap();
+                println!("{}", raw.get("message").unwrap());
+            }
+            else if response.status() == reqwest::StatusCode::from_u16(403).unwrap() {
+                println!("Forbidden operation, review your permissions on the repo");
+            }
+            else if response.status() == reqwest::StatusCode::from_u16(404).unwrap() {
+                println!("Repo not found, may check repo name");
+            }
+            else if response.status() == reqwest::StatusCode::from_u16(405).unwrap() {
+                let raw = response.json::<serde_json::Value>().unwrap();
+                println!("{}", raw.get("message").unwrap());
+            }
+            else if response.status() == reqwest::StatusCode::from_u16(409).unwrap() {
+                let raw = response.json::<serde_json::Value>().unwrap();
+                println!("{}", raw.get("message").unwrap());
+            }
+            else if response.status() == reqwest::StatusCode::from_u16(422).unwrap() {
+                println!("Unable to process");
+            }
+            else {
+                println!("Not possible to process your request now, try again later.");
             }
         },
         Err(error) => {
