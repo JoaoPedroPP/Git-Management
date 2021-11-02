@@ -113,6 +113,21 @@ Repository's visibility update private to public
 gitmgt update -n awesome_repository_name
 ```
 
+Create Pull Request
+```sh
+gitmgt github pullrequest -n awesome_repository_name -H head_branch -B base_branch -T "Title of the Pull Request" -b "Body message of the Pull Request"
+```
+
+List Pull Request
+```sh
+gitmgt github listpr -n awesome_repository_name [-s all|open|close]
+```
+
+Merge Pull Request
+```sh
+gitmgt github merge -n awesome_repository_name -N pullrequest_number -M merge_method merge|squash|rebase
+```
+
 Looking for help
 ```sh
 gitmgt --help
