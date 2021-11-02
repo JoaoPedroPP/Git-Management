@@ -114,11 +114,7 @@ pub fn repo(git: clap::ArgMatches) {
                     } else {
                         Some("")
                     };
-                    let state = if git.is_present("state") {
-                        git.value_of("state")
-                    } else {
-                        Some("all")
-                    };
+                    let state = git.value_of("state");
                     list_pr(repo_name.to_string(), org.unwrap().to_string(), state.unwrap().to_string());
                 },
                 None => println!("Repo name required")

@@ -98,6 +98,7 @@ fn main() {
                 .help("state filter of the pull request")
                 .short("s")
                 .long("state")
+                .validator(services::check_states)
                 .default_value("all")
                 .takes_value(true)
         )
