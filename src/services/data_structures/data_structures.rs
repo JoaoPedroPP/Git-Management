@@ -31,6 +31,19 @@ pub struct RepoArchive {
     pub archived: bool
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PullRequest {
+    pub head: String,
+    pub base: String,
+    pub title: String,
+    pub body: String
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct MergePR {
+    pub merge_method: String
+}
+
 impl GitHub {
     pub fn new(user: &str, token: &str) -> GitHub {
         GitHub { username: user.to_string(), token: token.to_string() }
@@ -61,5 +74,17 @@ impl RepoCreation {
 impl RepoArchive {
     pub fn new(name: String, arch: bool) -> RepoArchive {
         RepoArchive { name: name, archived: arch }
+    }
+}
+
+impl PullRequest {
+    pub fn new(title: String, head: String, base: String, body: String) -> PullRequest {
+        PullRequest { head: head, base: base, title: title, body: body }
+    }
+}
+
+impl MergePR {
+    pub fn new(merge: String) -> MergePR {
+        MergePR { merge_method: merge }
     }
 }
