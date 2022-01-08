@@ -1,4 +1,4 @@
-use clap::{Arg, App, ArgSettings};
+use clap::{Arg, App};
 mod services;
 
 fn main() {
