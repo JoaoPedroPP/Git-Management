@@ -1,4 +1,4 @@
-use clap::{Arg, App};
+use clap::{Arg, App, ArgSettings};
 mod services;
 
 fn main() {
@@ -8,6 +8,7 @@ fn main() {
         .arg(
             Arg::with_name("target")
                 .help("Selected target: config_github | github")
+                .default_value("github")
                 .takes_value(true)
                 .index(1)
                 .required(true)
@@ -67,25 +68,21 @@ fn main() {
         )
         .get_matches();
 
-    if matches.args.get("target").unwrap().vals[0] == "create" ||
-        matches.args.get("target").unwrap().vals[0] == "delete" ||
-        matches.args.get("target").unwrap().vals[0] == "pullrequest" {
-        let mut target = matches.args.get("target").unwrap().clone();
-        matches.args.insert("action", target.clone());
-        target.vals[0] = std::ffi::OsString::from("github".to_string());
-        matches.args.insert("target", target.clone());
-        for i in matches.args.values_mut() {
-            if i.vals[0] != "github" {
-                i.indices[0] = i.indices[0]+1;
-            }
-        }
-    }
 
     match matches.value_of("target") {
         Some("config") => services::config_github(matches),
         Some("config_github") => services::config_github(matches),
         Some("github") => services::repo(matches),
-        Some(_) => println!("Command not found"),
+        Some(cmd) => {
+            match cmd {
+                "create" | "delete" => {
+                    let target = matches.args.get("target").unwrap().clone();
+                    matches.args.insert("action", target.clone());
+                    services::repo(matches);
+                },
+                _ => println!("Command not found")
+            }
+        },
         None => println!("Invalid command"),
     };
 }
