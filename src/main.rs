@@ -130,7 +130,7 @@ fn main() {
         Some("github") => services::repo(matches),
         Some(cmd) => {
             match cmd {
-                "create" | "delete" => {
+                "create" | "delete" | "archive" | "update" | "pullrequest" => {
                     let target = matches.args.get("target").unwrap().clone();
                     matches.args.insert("action", target.clone());
                     services::repo(matches);
