@@ -31,6 +31,13 @@ pub struct RepoArchive {
     pub archived: bool
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Custom {
+    pub url: String,
+    pub username: String,
+    pub token: String
+}
+
 impl GitHub {
     pub fn new(user: &str, token: &str) -> GitHub {
         GitHub { username: user.to_string(), token: token.to_string() }
@@ -61,5 +68,22 @@ impl RepoCreation {
 impl RepoArchive {
     pub fn new(name: String, arch: bool) -> RepoArchive {
         RepoArchive { name: name, archived: arch }
+    }
+}
+
+// For other git server besides github
+impl Custom {
+    pub fn new(url: &str, user: &str, token: &str) -> Custom {
+        Custom { url: url.to_string(), username: user.to_string(), token: token.to_string() }
+    }
+
+    pub fn get_credentials() -> Custom {
+        let home: String = home_dir().unwrap().to_str().unwrap().to_string();
+        let path = format!("{}/.gitmgt/custom.json", home);
+        let folder = Path::new(&path);
+        let content = fs::read_to_string(folder).unwrap();
+        let cred: Custom = serde_json::from_str(&content).unwrap();
+
+        cred
     }
 }
