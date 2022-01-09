@@ -9,7 +9,6 @@ on:
 jobs:
   Cargo:
     runs-on: ubuntu-latest
-    image:
     steps:
       - uses: actions/checkout@v2
       - name: Build the Docker image
