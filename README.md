@@ -2,6 +2,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/joaopedropp/git-management?style=flat-square)](https://github.com/joaopedropp/git-management/issues)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](https://github.com/JoaoPedroPP/Git-Management/blob/main/LICENSE)
 [![Build](https://img.shields.io/github/workflow/status/joaopedropp/Git-Management/Build?style=flat-square)](https://github.com/JoaoPedroPP/Git-Management/actions/workflows/build.yml)
+![Crates.io](https://img.shields.io/crates/v/gitmgt?color=blue&style=flat-square)
 
 # Git Management CLI
 
