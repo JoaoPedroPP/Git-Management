@@ -1,7 +1,7 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/joaopedropp/git-management?style=flat-square)
 [![GitHub issues](https://img.shields.io/github/issues/joaopedropp/git-management?style=flat-square)](https://github.com/joaopedropp/git-management/issues)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](https://github.com/JoaoPedroPP/Git-Management/blob/main/LICENSE)
-<!-- [![GitHub stars](https://img.shields.io/github/stars/joaopedropp/git-management?style=flat-square)](https://github.com/joaopedropp/git-management/stargazers) -->
+[![Build](https://img.shields.io/github/workflow/status/joaopedropp/Git-Management/Build?style=flat-square)](https://github.com/JoaoPedroPP/Git-Management/actions/workflows/build.yml)
 
 # Git Management CLI
 
