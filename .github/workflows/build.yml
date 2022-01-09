@@ -7,18 +7,22 @@ on:
     branches: [ main ]
 
 jobs:
-  Cargo:
+  compile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag joaopedropp/interstella5555
-      - name: Docker Login
-        uses: docker/login-action@v1
+      - uses: actions-rs/toolchain@v1
         with:
-          username: joaopedropp
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Push to Docker Hub
-        run: docker push joaopedropp/interstella5555
-
+          toolchain: stable
+      - run: cargo build --release
+        name: Cargo build
+  crates:
+    runs-on: ubuntu-latest
+    needs: compile
+    if: ${{ github.event.head_commit.message == ':rocket:' }}
+    steps:
+      - name: Login
+        run: cargo login ${{ secret. CARGO_REGISTRY_TOKEN }}
+      - name: Publish
+        run: cargo publish
 
